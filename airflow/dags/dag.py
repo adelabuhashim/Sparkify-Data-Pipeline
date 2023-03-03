@@ -19,7 +19,7 @@ default_args = {
     "start_date": datetime.now(),
     "provide_context": True,
     "depends_on_past": False,
-    "retries": 0,
+    "retries": 2,
     "retry_delay": timedelta(minutes=5),
     "catchup": False,  # When turned off, the scheduler creates a DAG run only for the latest interval.
     "email_on_retry": False,
@@ -121,6 +121,12 @@ run_quality_checks = DataQualityOperator(
     redshift_conn_id="redshift",
     tables=["songplays", "songs", "artists", "time", "users"],
     schema="public",
+    dq_checks=[
+        {
+            "check_sql": "select count(*) from {}.{} where title is null",
+            "expected_result": 0,
+        },
+    ],
 )
 
 

@@ -49,7 +49,6 @@ class StageToRedshiftOperator(BaseOperator):
             credentials.access_key,
             credentials.secret_key,
             self.json_path,
-            self.execution_date,
         )
 
         redshift_hook.run(formatted_sql)
